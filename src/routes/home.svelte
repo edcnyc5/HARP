@@ -134,8 +134,8 @@ async function testAPI(){
     if ($repoSongListRaw.length != 0){
         return;
     } else {
-        const response = await fetch('./api/spaces');
-        console.log('response: ', response);
+        const response = await fetch('${url.origin}/api/spaces.server');
+        console.log('response: ', response.text());
         $spacesList = await response.json();
         console.log('contents: ', $spacesList);
         $repoSongListRaw = $spacesList.Contents;
