@@ -1,0 +1,35 @@
+{
+  "resources": [
+    "./static/audio/audio.ogg",
+    "./static/audio/audio.m4a",
+    "./static/audio/audio.mp3",
+    "./static/audio/audio.ac3"
+  ],
+  "spritemap": {
+    "Awaken_Jesus_Brazil": {
+      "start": 0,
+      "end": 321.66401360544216,
+      "loop": false
+    },
+    "Não Me Deixara": {
+      "start": 323,
+      "end": 882.0826530612245,
+      "loop": false
+    },
+    "Pacientemente Espere En Jehová": {
+      "start": 884,
+      "end": 1688.8640136054423,
+      "loop": false
+    },
+    "elgranexodo": {
+      "start": 1690,
+      "end": 2193.5733333333333,
+      "loop": false
+    },
+    "faithvdeath": {
+      "start": 2195,
+      "end": 2595,
+      "loop": false
+    }
+  }
+}

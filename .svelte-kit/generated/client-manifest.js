@@ -1,21 +1,23 @@
 export { matchers } from './client-matchers.js';
 
-export const nodes = [() => import('./nodes/0'),
-	() => import('./nodes/1'),
-	() => import('./nodes/2'),
-	() => import('./nodes/3'),
-	() => import('./nodes/4'),
-	() => import('./nodes/5')];
-
-export const server_loads = [];
+export const components = [
+	() => import("../../src/routes/__layout.svelte"),
+	() => import("../runtime/components/error.svelte"),
+	() => import("../../src/routes/home.svelte"),
+	() => import("../../src/routes/home_dep.svelte"),
+	() => import("../../src/routes/index.svelte"),
+	() => import("../../src/routes/library.svelte"),
+	() => import("../../src/routes/radio.svelte"),
+	() => import("../../src/routes/radio_dep.svelte"),
+	() => import("../../src/routes/settings_dep.svelte")
+];
 
 export const dictionary = {
-	"/": [2],
-	"/about": [3],
-	"/sverdle": [~4],
-	"/sverdle/how-to-play": [5]
-};
-
-export const hooks = {
-	handleError: (({ error }) => { console.error(error) }),
+	"": [[0, 4], [1]],
+	"home": [[0, 2], [1]],
+	"home_dep": [[0, 3], [1]],
+	"library": [[0, 5], [1]],
+	"radio": [[0, 6], [1]],
+	"radio_dep": [[0, 7], [1]],
+	"settings_dep": [[0, 8], [1]]
 };
