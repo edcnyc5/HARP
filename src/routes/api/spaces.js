@@ -143,6 +143,7 @@ export async function get()
 {
   try{
   const resp = await s3Client.send(new ListObjectsCommand(bucketParams));
+  // const r = await resp.json();
   // let newObj = {};
   for (const Contents in resp) {
     if (Object.hasOwnProperty.call(resp, Contents)) {
@@ -264,12 +265,14 @@ export async function get()
 
 
   // console.log('data: ', data);
+  console.log('resp: ', resp);
+  console.log('resp(object): ', new Response(resp.Contents));
 
 
-  // return new Response(resp);
-  return {
-    body: resp
-  }
+  return new Response(resp.Contents);
+  // return {
+  //   body: resp
+  // }
 
   // function finalReturn(returnString) {
   //   const responsi = returnString;
