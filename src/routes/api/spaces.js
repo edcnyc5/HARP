@@ -266,9 +266,10 @@ export async function get()
   // console.log('data: ', data);
 
 
-  return {
-    body: resp
-  }
+  return new Response(await response.json());
+  // return {
+  //   body: resp
+  // }
 
   // function finalReturn(returnString) {
   //   const responsi = returnString;
