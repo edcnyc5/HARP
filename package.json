@@ -4,7 +4,7 @@
 	"scripts": {
 		"dev": "svelte-kit dev --https",
 		"audio": "audiosprite --output ./static/audio/audio ./raw_audio/songs/*.*",
-		"build": "svelte-kit build",
+		"build": "CF_PAGES=1 svelte-kit build",
 		"package": "svelte-kit package",
 		"preview": "svelte-kit preview",
 		"prepare": "svelte-kit sync",
