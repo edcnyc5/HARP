@@ -266,7 +266,7 @@ export async function get()
   // console.log('data: ', data);
 
 
-  return new Response(resp.json());
+  return new Response(resp);
   // return {
   //   body: resp
   // }
