@@ -266,13 +266,11 @@ export async function get()
 
   // console.log('data: ', data);
   console.log('resp: ', resp);
-  console.log('resp(object): ', new Response(resp.Contents));
 
 
-  return new Response(resp.Contents);
-  // return {
-  //   body: resp
-  // }
+  return {
+    body: resp
+  }
 
   // function finalReturn(returnString) {
   //   const responsi = returnString;
