@@ -266,10 +266,10 @@ export async function get()
   // console.log('data: ', data);
 
 
-  return new Response(resp);
-  // return {
-  //   body: resp
-  // }
+  // return new Response(resp);
+  return {
+    body: resp
+  }
 
   // function finalReturn(returnString) {
   //   const responsi = returnString;
