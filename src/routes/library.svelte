@@ -124,7 +124,7 @@ async function testAPI(){
         return;
     } else {
         const response = await fetch('./api/spaces.js');
-        console.log('response: ', response.json());
+        console.log('response: ', response);
         $spacesList = await response.json();
         console.log('contents: ', $spacesList);
         $repoSongListRaw = $spacesList.Contents;
