@@ -102,10 +102,23 @@
         trackTitle = $songs[trackIndex].Name;
     }
 
-    const autoPlayNextTrack = () => {
+    const PlayNextTrack = () => {
         if (trackIndex <= $songs.length-1){
             trackIndex += 1;
             audioFile.pause();
+            loadTrack();
+            audioFile.play();
+        } else {
+            trackIndex = 0;
+            audioFile.pause();
+            loadTrack();
+            audioFile.play();
+        }
+    }
+    const autoPlayNextTrack = () => {
+        if (trackIndex <= $songs.length-1){
+            trackIndex += 1;
+            // audioFile.pause();
             loadTrack();
             audioFile.play();
         } else {
@@ -217,7 +230,7 @@
                     {progress} />
     <Player {isPlaying}
             on:playPause={playPauseAudio}
-            on:forward={autoPlayNextTrack}/>
+            on:forward={PlayNextTrack}/>
     <Playlist on:click={handleTrack} />
 {/if}
 

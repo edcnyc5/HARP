@@ -10,6 +10,8 @@ const s3Client = new S3({
     endpoint: "https://fra1.digitaloceanspaces.com",
     region: "fra1",
     credentials: {
+    //   accessKeyId: Platform.env.VITE_SPACES_KEY,
+    //   secretAccessKey: Platform.env.VITE_SPACES_SECRET
       accessKeyId: import.meta.env.VITE_SPACES_KEY,
       secretAccessKey: import.meta.env.VITE_SPACES_SECRET
     }
