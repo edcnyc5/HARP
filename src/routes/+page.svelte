@@ -158,7 +158,8 @@
 		if (audioFile.ended) {
 			isPlaying = false;
 			clearInterval(trackTimer);
-			console.log(`Ended = ${audioFile.ended}`);	
+			console.log(`Ended = ${audioFile.ended}`);
+            autoPlayNextTrack();	
 		} else {
 			trackTimer = setInterval(updateTime, 100);
 		}
