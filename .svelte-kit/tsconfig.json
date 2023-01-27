@@ -1,14 +1,6 @@
 {
 	"compilerOptions": {
-		"baseUrl": "..",
-		"paths": {
-			"$lib": [
-				"src/lib"
-			],
-			"$lib/*": [
-				"src/lib/*"
-			]
-		},
+		"paths": {},
 		"rootDirs": [
 			"..",
 			"./types"
@@ -18,19 +10,32 @@
 		"preserveValueImports": true,
 		"lib": [
 			"esnext",
-			"DOM"
+			"DOM",
+			"DOM.Iterable"
 		],
 		"moduleResolution": "node",
 		"module": "esnext",
 		"target": "esnext"
 	},
 	"include": [
+		"ambient.d.ts",
+		"./types/**/$types.d.ts",
+		"../vite.config.ts",
 		"../src/**/*.js",
 		"../src/**/*.ts",
-		"../src/**/*.svelte"
+		"../src/**/*.svelte",
+		"../src/**/*.js",
+		"../src/**/*.ts",
+		"../src/**/*.svelte",
+		"../tests/**/*.js",
+		"../tests/**/*.ts",
+		"../tests/**/*.svelte"
 	],
 	"exclude": [
 		"../node_modules/**",
-		"./**"
+		"./[!ambient.d.ts]**",
+		"../src/service-worker.js",
+		"../src/service-worker.ts",
+		"../src/service-worker.d.ts"
 	]
 }
