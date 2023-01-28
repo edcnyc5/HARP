@@ -47,18 +47,23 @@
             } else{
                 console.log('unknown: ', c);
             }
-            $songs = $songs.sort(randFunc);
-            let test = setTimeout(() => {
-                if($songs.length > 0){
-                    loadTrack();
-                    success = true;
-                }
-                if(success){
-                    clearTimeout(test);
-                }
-            }, 500);
-
         });
+
+        $songs = $songs.sort(randFunc);
+            // let test = setTimeout(() => {
+            //     if($songs.length > 0){
+            //         loadTrack();
+            //         success = true;
+            //     }
+            //     if(success){
+            //         clearTimeout(test);
+            //     }
+            // }, 500);
+
+            if($songs.length > 0){
+                loadTrack();
+                success = true;
+            }
     }
 
     function randFunc(a, b) {
