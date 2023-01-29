@@ -42,14 +42,34 @@
         }
     }
 
+    const PlayLastTrack = () => {
+        if ($trackIndex >= 1){
+            $trackIndex -= 1;
+            $audioFile.pause();
+            loadTrack();
+            $audioFile.play();
+        } else {
+            $trackIndex = $songs.length;
+            $audioFile.pause();
+            loadTrack();
+            $audioFile.play();
+        }
+    }
 
 
 </script>
 
+<h1 class="text-3xl font-bold p-1">Home</h1>
+
+<h2 class="text-md font-bold p-1">{@html 'Coming Soon! :)'}</h2>
+
+<div class="flex fixed w-screen justify-around bottom-28 text-sm font-bold ">
+    Click below to return to the Welcome Screen! 
+</div>
 <div>
     {#if $success}
         <PlayerMini on:playPause={playPauseAudio}
-                    on:forward={PlayNextTrack}/>
+                    on:forward={PlayNextTrack}
+                    on:rewind={PlayLastTrack}/>
     {/if}
 </div>
-<div></div>

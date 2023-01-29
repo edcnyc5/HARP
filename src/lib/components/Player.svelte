@@ -17,9 +17,9 @@
 
 
 <div id="btn-cont">
-	<!-- <button id="rewind" on:click={() => dispatch('rewind')}>
+	<button id="rewind" on:click={() => dispatch('rewind')}>
 		<img src={icons.rewind} alt="rewind"/>
-	</button> -->
+	</button>
 	<button id="play" on:click={() => dispatch('playPause')}>
 		<img src={$isPlaying ? icons.pause : icons.play} 
 				 alt="play"/>

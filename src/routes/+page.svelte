@@ -239,6 +239,20 @@
         }
     }
 
+    const PlayLastTrack = () => {
+        if ($trackIndex >= 1){
+            $trackIndex -= 1;
+            $audioFile.pause();
+            loadTrack();
+            $audioFile.play();
+        } else {
+            $trackIndex = $songs.length;
+            $audioFile.pause();
+            loadTrack();
+            $audioFile.play();
+        }
+    }
+
     
 </script>
 
@@ -253,7 +267,8 @@
     <TrackName/>
     <ProgressBar/>
     <Player on:playPause={playPauseAudio}
-            on:forward={PlayNextTrack}/>
+            on:forward={PlayNextTrack}
+            on:rewind={PlayLastTrack}/>
     <Playlist on:click={handleTrack} />
 {/if}
 

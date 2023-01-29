@@ -70,8 +70,8 @@
 </div>
 
 {#if usrSearch}
-    <div class="relative bg-zinc-900 w-screen h-[40rem] mt-5" id="searchList">
-        <div class="static h-[40rem] overflow-auto">
+    <div class="relative bg-zinc-900 w-screen h-96 mt-5" id="searchList">
+        <div class="static h-96 overflow-auto">
             {#each $songs.filter(s => s.Name.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.toLowerCase()) || s.Church.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.toLowerCase())) as sResult}
                 <SearchResults {sResult}
                                 on:passSong(sResult)={receivedSong(sResult)}/>
