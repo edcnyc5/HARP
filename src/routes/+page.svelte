@@ -118,7 +118,7 @@
     }
 
     const PlayNextTrack = () => {
-        if ($trackIndex <= $songs.length-1){
+        if ($trackIndex <= $songs.length-2){
             $trackIndex += 1;
             $audioFile.pause();
             loadTrack();
@@ -131,7 +131,7 @@
         }
     }
     const autoPlayNextTrack = () => {
-        if ($trackIndex <= $songs.length-1){
+        if ($trackIndex <= $songs.length-2){
             $trackIndex += 1;
             // $audioFile.pause();
             loadTrack();
@@ -241,12 +241,15 @@
 
     const PlayLastTrack = () => {
         if ($trackIndex >= 1){
+            console.log('trackIndex >= 1 (from PlayLastTrack)');
             $trackIndex -= 1;
             $audioFile.pause();
             loadTrack();
             $audioFile.play();
         } else {
-            $trackIndex = $songs.length;
+            console.log('else (from PlayLastTrack)');
+            $trackIndex = $songs.length-1;
+            console.log('$trackIndex: ', $trackIndex);
             $audioFile.pause();
             loadTrack();
             $audioFile.play();

@@ -29,7 +29,7 @@
     }
 
     const PlayNextTrack = () => {
-        if ($trackIndex <= $songs.length-1){
+        if ($trackIndex <= $songs.length-2){
             $trackIndex += 1;
             $audioFile.pause();
             loadTrack();
@@ -49,7 +49,7 @@
             loadTrack();
             $audioFile.play();
         } else {
-            $trackIndex = $songs.length;
+            $trackIndex = $songs.length-1;
             $audioFile.pause();
             loadTrack();
             $audioFile.play();

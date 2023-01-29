@@ -8,7 +8,7 @@
     let runningtime;
 
     const autoPlayNextTrack = () => {
-        if ($trackIndex <= $songs.length-1){
+        if ($trackIndex <= $songs.length-2){
             $trackIndex += 1;
             // $audioFile.pause();
             loadTrack();

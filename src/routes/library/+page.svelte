@@ -31,7 +31,7 @@
     }
 
     const PlayNextTrack = () => {
-        if ($trackIndex <= $songs.length-1){
+        if ($trackIndex <= $songs.length-2){
             $trackIndex += 1;
             $audioFile.pause();
             loadTrack();
@@ -56,6 +56,20 @@
         $audioFile.pause();
         loadTrack();
         $audioFile.play();
+    }
+
+    const PlayLastTrack = () => {
+        if ($trackIndex >= 1){
+            $trackIndex -= 1;
+            $audioFile.pause();
+            loadTrack();
+            $audioFile.play();
+        } else {
+            $trackIndex = $songs.length-1;
+            $audioFile.pause();
+            loadTrack();
+            $audioFile.play();
+        }
     }
 
 
@@ -84,6 +98,7 @@
 <div>
     {#if $success}
         <PlayerMini on:playPause={playPauseAudio}
-                    on:forward={PlayNextTrack}/>
+                    on:forward={PlayNextTrack}
+                    on:rewind={PlayLastTrack}/>
     {/if}
 </div>
