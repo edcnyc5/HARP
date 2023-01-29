@@ -4,17 +4,18 @@
     import { trackTitle, trackChurch } from "../stores";
 </script>
 
-<div>
-    <h3>{$trackTitle}</h3>
-    <h4>{$trackChurch}</h4>
+<div class="text-xs">
+    {$trackTitle}
+    <br/>
+    {$trackChurch}
 </div>
 
 <style>
-    div {
+    /* div {
         text-align: center;
-    }
+    } */
     
-    h3 {
-        margin: 5px 0 10px;
-    }
+    /* h3 { */
+        /* margin: 5px 0 10px; */
+    /* } */
 </style>

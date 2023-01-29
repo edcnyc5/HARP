@@ -7,13 +7,13 @@
 </script>
 
 
-<section id="playlist-cont">
-	<button class="accordion"
+<section id="playlist-cont w-full">
+	<button class="accordion bg-zinc-900"
 					class:active={listIsShowing}
 					on:click={showPlayList}>&#9776; Playlist</button>
 
 	<ul class:show-list={listIsShowing}>
-		{#each $songs as {Name, Url}, i}
+		{#each $songs as {Name, Url, Church}, i}
 		<li data-track-id={i}
 				on:click>
 			{Name}</li>
@@ -23,17 +23,17 @@
 
 
 <style>
-	section#playlist-cont {
-		width: 298px;	
-		box-shadow: 0 0 5px #222;
+	/* section#playlist-cont { */
+		/* width: 298px;	 */
+		/* box-shadow: 0 0 5px #222;
 		border-radius: 0 0 5px 5px;
-		background: #333;
-	}
+		background: #333; */
+	/* } */
 	
 	/* Style the buttons that are used to open and close the accordion panel */
 	button.accordion {		
-		background: #222;
-		color: #bbb;
+		/* background: #222; */
+		/* color: #bbb; */
 		margin: 0;
 		padding: 5px 15px;
 		width: 100%;

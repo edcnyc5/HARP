@@ -4,12 +4,13 @@
 	import Playlist from "../lib/components/Playlist.svelte";
 	import ProgressBar from "../lib/components/ProgressBar.svelte";
 	import TrackName from "../lib/components/TrackName.svelte";
-    import { songs, bibAudios, expAudios } from "../lib/stores";
+    import { songs, bibAudios, expAudios, success, trackTitle, trackChurch, totalTrackTime, isPlaying, trackIndex, currentTimeDisplay, totalTimeDisplay, progress, audioFile, trackTimer, currHrs, currMins, currSecs, durHrs, durMins, durSecs } from "../lib/stores";
 
-    let success = false;
 
 
     async function getSongs(){
+        if($success)
+            return;
         const response = await fetch("./api/dOs");
         let resp = await response.json();
         console.log('response', resp);
@@ -61,9 +62,15 @@
             // }, 500);
 
             if($songs.length > 0){
+                $trackIndex = 0;
+                $progress = 0;
+                $totalTimeDisplay = 'loading...';
+                $currentTimeDisplay = '0:00:00';
                 loadTrack();
-                success = true;
+                $success = true;
+                console.log('success, data loaded');
             }
+        console.log('$songs: ', $songs);
     }
 
     function randFunc(a, b) {
@@ -92,127 +99,141 @@
     // })
 
         // Get Audio track
-    let trackIndex = 0;
+    // let trackIndex = 0;
     // let audioFile = new Audio($songs[trackIndex].Url);
     // let trackTitle = $songs[trackIndex].Name;
-    let audioFile;
-    let trackTitle;
+    // let audioFile;
+    // let trackTitle;
+    // let trackChurch;
 
     const loadTrack = () => {
-        audioFile = new Audio($songs[trackIndex].Url);
-        audioFile.onloadedmetadata = () => {
-            totalTrackTime = audioFile.duration;
+        $audioFile = new Audio($songs[$trackIndex].Url);
+        $audioFile.onloadedmetadata = () => {
+            $totalTrackTime = $audioFile.duration;
             updateTime();
         }
-        trackTitle = $songs[trackIndex].Name;
+        console.log('$audioFile: ', $audioFile);
+        $trackTitle = $songs[$trackIndex].Name;
+        $trackChurch = $songs[$trackIndex].Church;
     }
 
     const PlayNextTrack = () => {
-        if (trackIndex <= $songs.length-1){
-            trackIndex += 1;
-            audioFile.pause();
+        if ($trackIndex <= $songs.length-1){
+            $trackIndex += 1;
+            $audioFile.pause();
             loadTrack();
-            audioFile.play();
+            $audioFile.play();
         } else {
-            trackIndex = 0;
-            audioFile.pause();
+            $trackIndex = 0;
+            $audioFile.pause();
             loadTrack();
-            audioFile.play();
+            $audioFile.play();
         }
     }
     const autoPlayNextTrack = () => {
-        if (trackIndex <= $songs.length-1){
-            trackIndex += 1;
-            // audioFile.pause();
+        if ($trackIndex <= $songs.length-1){
+            $trackIndex += 1;
+            // $audioFile.pause();
             loadTrack();
-            audioFile.play();
+            $audioFile.play();
         } else {
-            trackIndex = 0;
-            audioFile.pause();
+            $trackIndex = 0;
+            // $audioFile.pause();
             loadTrack();
-            audioFile.play();
+            $audioFile.play();
         }
     }
 
-    let totalTrackTime;
-    $: console.log(totalTrackTime)
-    if(audioFile != undefined){
-        audioFile.onloadedmetadata = () => {
-            totalTrackTime = audioFile.duration;
+    // let totalTrackTime;
+    $: console.log($totalTrackTime)
+    if($audioFile != undefined){
+        $audioFile.onloadedmetadata = () => {
+            $totalTrackTime = $audioFile.duration;
             updateTime();
         }
     }
 
-    let totalTimeDisplay = 'loading...';
-    let currentTimeDisplay = '0:00:00';
-    let progress = 0;
-    let trackTimer;
+    // if($totalTimeDisplay == '')
+    //     $totalTimeDisplay = 'loading...';
+    // if($currentTimeDisplay == '')
+    //     $currentTimeDisplay = '0:00:00';
+    // let trackTimer;
 
     function updateTime() {
-		progress = audioFile.currentTime * (100 / totalTrackTime);
+		// $progress = $audioFile.currentTime * (100 / $totalTrackTime);
 		
-		let currHrs = Math.floor((audioFile.currentTime / 60) / 60);
-		let currMins = Math.floor(audioFile.currentTime / 60);
-		let currSecs = Math.floor(audioFile.currentTime - currMins * 60);
+		// $currHrs = Math.floor(($audioFile.currentTime / 60) / 60);
+		// $currMins = Math.floor($audioFile.currentTime / 60);
+		// $currSecs = Math.floor($audioFile.currentTime - $currMins * 60);
 		
-		let durHrs = Math.floor( (totalTrackTime / 60) / 60 );
-		let durMins = Math.floor( (totalTrackTime / 60) % 60 );
-		let durSecs =  Math.floor(totalTrackTime - (durHrs*60*60) - (durMins * 60));
+		// $durHrs = Math.floor( ($totalTrackTime / 60) / 60 );
+		// $durMins = Math.floor( ($totalTrackTime / 60) % 60 );
+		// $durSecs =  Math.floor($totalTrackTime - ($durHrs*60*60) - ($durMins * 60));
 		
-		if(currSecs < 10) currSecs = `0${currSecs}`;
-		if(durSecs < 10) durSecs = `0${durSecs}`;
-		if(currMins < 10) currMins = `0${currMins}`;
-		if(durMins < 10) durMins = `0${durMins}`;
+		// // let currHrs = Math.floor(($audioFile.currentTime / 60) / 60);
+		// // let currMins = Math.floor($audioFile.currentTime / 60);
+		// // let currSecs = Math.floor($audioFile.currentTime - currMins * 60);
 		
-		currentTimeDisplay = `${currHrs}:${currMins}:${currSecs}`;
-		totalTimeDisplay = `${durHrs}:${durMins}:${durSecs}`;
+		// // let durHrs = Math.floor( ($totalTrackTime / 60) / 60 );
+		// // let durMins = Math.floor( ($totalTrackTime / 60) % 60 );
+		// // let durSecs =  Math.floor($totalTrackTime - (durHrs*60*60) - (durMins * 60));
 		
-		if (audioFile.ended) {
-			toggleTimeRunning();
-		}
+		// if($currSecs < 10) $currSecs = `0${$currSecs}`;
+		// if($durSecs < 10) $durSecs = `0${$durSecs}`;
+		// if($currMins < 10) $currMins = `0${$currMins}`;
+		// if($durMins < 10) $durMins = `0${$durMins}`;
+		
+		// $currentTimeDisplay = `${$currHrs}:${$currMins}:${$currSecs}`;
+		// $totalTimeDisplay = `${$durHrs}:${$durMins}:${$durSecs}`;
+		
+		// if ($audioFile.ended) {
+		// 	toggleTimeRunning();
+		// }
+        console.log('updateTime runs');
 	}
 
     const toggleTimeRunning = () => {
-		if (audioFile.ended) {
-			isPlaying = false;
-			clearInterval(trackTimer);
-			console.log(`Ended = ${audioFile.ended}`);
+		if ($audioFile.ended) {
+			$isPlaying = false;
+			clearInterval($trackTimer);
+			console.log(`Ended = ${$audioFile.ended}`);
             autoPlayNextTrack();	
 		} else {
-			trackTimer = setInterval(updateTime, 100);
+			$trackTimer = setInterval(updateTime, 100);
 		}
 	}
 
     // Controls
-    let isPlaying = false;
-    $: console.log(`isPlaying = ${isPlaying}`)
+    // let isPlaying = false;
+    $: console.log(`isPlaying = ${$isPlaying}`)
+    // $: console.log(`currentTimeDisplay = ${$currentTimeDisplay}`)
 
     const playPauseAudio = () => {
-        if (audioFile.paused) {
-            toggleTimeRunning()
-            audioFile.play();
-            isPlaying = true;
+        if ($audioFile.paused) {
+            // toggleTimeRunning();
+            $audioFile.play();
+            $isPlaying = true;
         } else {
-            toggleTimeRunning()
-            audioFile.pause();
-            isPlaying = false;
+            // toggleTimeRunning();
+            $audioFile.pause();
+            $isPlaying = false;
         }
     }
 
     //Vol Slider
     let vol = 90;
-    const adjustVol = () => audioFile.volume = vol / 100;
+    const adjustVol = () => $audioFile.volume = vol / 100;
 
     //Playlist
     const handleTrack = (e) => {
-        if (!isPlaying){
-            trackIndex = Number(e.target.dataset.trackId);
+        if (!$isPlaying){
+            $trackIndex = Number(e.target.dataset.trackId);
             loadTrack();
             playPauseAudio(); //autoplay
         } else {
-            isPlaying = false;
-            audioFile.pause();
-            trackIndex = Number(e.target.dataset.trackId);
+            $isPlaying = false;
+            $audioFile.pause();
+            $trackIndex = Number(e.target.dataset.trackId);
             loadTrack();
             playPauseAudio(); //autoplay
         }
@@ -221,20 +242,17 @@
     
 </script>
 
-<h1 class="text-3xl font-bold ">Welcome to HARP</h1>
+<h1 class="text-3xl font-bold p-1">Welcome to H.A.R.P.</h1>
 <br/>
 <!-- {#each $songs as s}
     <a href="{s.Url}">{s.Name}</a>
     <br/>
 {/each} -->
 
-{#if $songs.length > 0}
-    <TrackName {trackTitle} />
-    <ProgressBar {currentTimeDisplay}
-                    {totalTimeDisplay}
-                    {progress} />
-    <Player {isPlaying}
-            on:playPause={playPauseAudio}
+{#if $success}
+    <TrackName/>
+    <ProgressBar/>
+    <Player on:playPause={playPauseAudio}
             on:forward={PlayNextTrack}/>
     <Playlist on:click={handleTrack} />
 {/if}
@@ -242,9 +260,10 @@
 
 
 
-<style lang="postcss">
+
+<!-- <style lang="postcss">
     :global(html) {
         background-color: theme(colors.black);
         color: theme(colors.white);
     }
-</style>
+</style> -->

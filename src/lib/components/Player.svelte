@@ -1,5 +1,6 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
+    import { isPlaying } from "../stores";
 	
 	let dispatch = createEventDispatcher();
 	
@@ -10,7 +11,7 @@
 		fwd: "https://freesvg.org/img/media-skip-forward.png"
 	}
 	
-  export let isPlaying;
+//   export let isPlaying;
 	
 </script>
 
@@ -20,7 +21,7 @@
 		<img src={icons.rewind} alt="rewind"/>
 	</button> -->
 	<button id="play" on:click={() => dispatch('playPause')}>
-		<img src={isPlaying ? icons.pause : icons.play} 
+		<img src={$isPlaying ? icons.pause : icons.play} 
 				 alt="play"/>
 	</button>
 	<button id="forward" on:click={() => dispatch('forward')}>
