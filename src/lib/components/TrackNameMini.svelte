@@ -5,8 +5,13 @@
 </script>
 
 <div class="text-xs">
-    {$trackTitle}
-    <br/>
+    <div style="text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 220px;
+    overflow: hidden;">
+        {$trackTitle}
+    </div>
+
     {$trackChurch}
 </div>
 

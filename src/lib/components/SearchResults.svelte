@@ -1,8 +1,10 @@
 <script>
     import { createEventDispatcher } from 'svelte';
+	import CoverArtMiniRes from './CoverArtMiniRes.svelte';
     export let sResult;
 
     let dispatch = createEventDispatcher();
+	
 
 
 </script>
@@ -14,7 +16,7 @@
 <div class="static w-full h-10 border-solid border-2 bg-zinc-900 border-zinc-900 shadow-sm shadow-zinc-300 my-px" id="btn-cont">
     <div class="w-1/12">
     </div>
-    <div class="self-center w-9/12 h-10 truncate" on:click={() => dispatch('passSong(sResult)')}>
+    <div class="self-center w-9/12 h-10 truncate" on:click={() => dispatch('passSong')}>
         <span class="text-sw-full">
             {sResult.Name}
         </span>
@@ -24,7 +26,7 @@
         </span>
     </div>
     <div class="w-10" on:click={(e) => console.log('clicked on: ', e)}>
-        <div class="text-xs ">image</div>
+        <CoverArtMiniRes churchFull={sResult.Church}/>
     </div>
 </div>
 

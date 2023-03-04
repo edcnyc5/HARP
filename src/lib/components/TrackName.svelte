@@ -4,9 +4,10 @@
     import { trackTitle, trackChurch } from "../stores";
 </script>
 
-<div>
-    <h3>{$trackTitle}</h3>
-    <h4>{$trackChurch}</h4>
+<div class="pt-2">
+    <span>{$trackTitle}</span>
+    <br/>
+    <span class="italic font-light text-sm">{$trackChurch}</span>
 </div>
 
 <style>

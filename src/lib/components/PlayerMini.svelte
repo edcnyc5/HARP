@@ -1,8 +1,9 @@
 <script>
-	import { createEventDispatcher } from 'svelte';
-    import { isPlaying } from "../stores";
+	import { afterUpdate, createEventDispatcher, onMount } from 'svelte';
+    import { isPlaying,refresh } from "../stores";
 	import TrackNameMini from './TrackNameMini.svelte';
     import { goto } from "$app/navigation";
+	import CoverArtMini from './CoverArtMini.svelte';
 	
 	let dispatch = createEventDispatcher();
 	
@@ -18,14 +19,16 @@
 </script>
 
 
-<div class="w-full h-10" id="btn-cont">
+<div class="w-full h-10 bg-zinc-900" id="btn-cont">
     <div>
         <button id="rewind" on:click={() => dispatch('rewind')}>
             <img src={icons.rewind} alt="rewind"/>
         </button>
         <button id="play" on:click={() => dispatch('playPause')}>
+			{#if !$refresh}
             <img src={$isPlaying ? icons.pause : icons.play} 
                      alt="play"/>
+			{/if}
         </button>
         <button id="forward" on:click={() => dispatch('forward')}>
             <img src={icons.fwd} alt="forward"/>
@@ -34,8 +37,11 @@
     <div class="self-center w-7/12 h-10 p-1" on:click={() => goto('./')}>
         <TrackNameMini/>
     </div>
-    <div class="w-10" on:click={() => goto('./')}>
-        <div class="text-xs ">image</div>
+    <div class="w-10 h-9 self-center pr-1" on:click={() => goto('./')}>
+        <!-- <div class="text-xs ">image</div> -->
+		{#if !$refresh}
+			<CoverArtMini/>
+		{/if}
     </div>
 </div>
 
@@ -45,7 +51,7 @@
         bottom: 59px;
 		display: flex;
 		justify-content: space-between;
-        background: indianred;
+        /* background: rgba(26, 26, 26, 0.365); */
 	}
 	
 	button {

@@ -1,10 +1,16 @@
 <script>
     import { goto } from "$app/navigation";
 	import Player from "../../lib/components/Player.svelte";
-	import PlayerMini from "../../lib/components/PlayerMini.svelte";
+	import { onMount } from "svelte";
+    import PlayerMini from "../../lib/components/PlayerMini.svelte";
     import { audioFile, isPlaying, trackIndex, songs, totalTrackTime, trackTitle, trackChurch, currentTimeDisplay, success } from "../../lib/stores";
     // $: console.log(`currentTimeDisplay = ${$currentTimeDisplay}`);
 
+    onMount(() => {
+        if(!$success){
+            goto('./');
+        }
+    })
     
     const playPauseAudio = () => {
         if ($audioFile.paused) {

@@ -1,13 +1,15 @@
 <script>
 	import { songs, bibAudios, expAudios } from "../stores";
+	import { createEventDispatcher } from "svelte";
 	
 	let listIsShowing = false;
+	let dispatch = createEventDispatcher();
 	
 	const showPlayList = () => listIsShowing = !listIsShowing
 </script>
 
 
-<section id="playlist-cont w-full">
+<section id="playlist-cont w-full h-36">
 	<button class="accordion bg-zinc-900"
 					class:active={listIsShowing}
 					on:click={showPlayList}>&#9776; Playlist</button>
@@ -15,8 +17,14 @@
 	<ul class:show-list={listIsShowing}>
 		{#each $songs as {Name, Url, Church}, i}
 		<li data-track-id={i}
-				on:click>
-			{Name}</li>
+				on:click={() => dispatch('playList', {data: i, url: Url})}>
+			<span>
+				{Name} - 
+			</span>
+			<span class="italic font-light text-sm">
+				{Church}
+			</span>
+		</li>
 		{/each}
 	</ul>
 </section>
@@ -74,6 +82,6 @@
 	}
 	
 	.show-list {
-		height: 150px;
+		height: 9rem;
 	}
 </style>

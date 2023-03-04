@@ -2,6 +2,7 @@ import { writable, readable } from 'svelte/store';
 
 export let success = writable(false);
 export let isPlaying = writable(false);
+export let refresh = writable(false);
 export let songs = writable([]);
 export let bibAudios = writable([]);
 export let expAudios = writable([]);

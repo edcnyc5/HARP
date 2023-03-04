@@ -1,12 +1,18 @@
 <script>
 	import { afterUpdate, onMount } from "svelte";
+	import CoverArt from "../lib/components/CoverArt.svelte";
 	import Player from "../lib/components/Player.svelte";
 	import Playlist from "../lib/components/Playlist.svelte";
 	import ProgressBar from "../lib/components/ProgressBar.svelte";
 	import TrackName from "../lib/components/TrackName.svelte";
-    import { songs, bibAudios, expAudios, success, trackTitle, trackChurch, totalTrackTime, isPlaying, trackIndex, currentTimeDisplay, totalTimeDisplay, progress, audioFile, trackTimer, currHrs, currMins, currSecs, durHrs, durMins, durSecs } from "../lib/stores";
+    import { songs, bibAudios, expAudios, success, trackTitle, trackChurch, 
+        totalTrackTime, isPlaying, trackIndex, currentTimeDisplay, totalTimeDisplay, 
+        progress, audioFile, trackTimer, currHrs, currMins, currSecs, durHrs, durMins, 
+        durSecs, refresh } from "../lib/stores";
 
-
+    let sWidth; 
+    console.log('g');
+    
 
     async function getSongs(){
         if($success)
@@ -78,6 +84,7 @@
     }
 
     onMount(() => {
+        sWidth = window.screen.width;
         getSongs();
     })
 
@@ -107,6 +114,7 @@
     // let trackChurch;
 
     const loadTrack = () => {
+        $refresh = true;
         $audioFile = new Audio($songs[$trackIndex].Url);
         $audioFile.onloadedmetadata = () => {
             $totalTrackTime = $audioFile.duration;
@@ -115,6 +123,10 @@
         console.log('$audioFile: ', $audioFile);
         $trackTitle = $songs[$trackIndex].Name;
         $trackChurch = $songs[$trackIndex].Church;
+        setTimeout(() => {
+            $refresh = false;
+            console.log('$refAfter: ', $refresh);
+        }, 510);
     }
 
     const PlayNextTrack = () => {
@@ -227,13 +239,18 @@
     //Playlist
     const handleTrack = (e) => {
         if (!$isPlaying){
-            $trackIndex = Number(e.target.dataset.trackId);
+            // console.log('e: ', e);
+            // console.log('e.target: ', e.target);
+            // console.log('e.detail: ', e.detail);
+            // console.log('e.target.dataset.trackId: ',e.target.dataset.trackId);
+            $trackIndex = Number(e.detail.data);
             loadTrack();
             playPauseAudio(); //autoplay
         } else {
+            // console.log('e.target.dataset.trackId: ', e.target.dataset.trackId);
             $isPlaying = false;
             $audioFile.pause();
-            $trackIndex = Number(e.target.dataset.trackId);
+            $trackIndex = Number(e.detail.data);
             loadTrack();
             playPauseAudio(); //autoplay
         }
@@ -267,12 +284,17 @@
 {/each} -->
 
 {#if $success}
+    {#if !$refresh}
+        <CoverArt/>
+    {:else}
+        <div style="height: 13.9rem; width: 4rem"></div>
+    {/if}
     <TrackName/>
     <ProgressBar/>
     <Player on:playPause={playPauseAudio}
             on:forward={PlayNextTrack}
             on:rewind={PlayLastTrack}/>
-    <Playlist on:click={handleTrack} />
+    <Playlist on:playList={handleTrack} />
 {/if}
 
 
