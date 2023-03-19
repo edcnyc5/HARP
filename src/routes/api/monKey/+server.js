@@ -1,8 +1,8 @@
 // import { createRequire } from 'module';
 // import { createRequire } from './module';
 // const require = createRequire(import.meta.url);
-import axios from "axios";
-import  nodeFetch  from "node-fetch";
+// import axios from "axios";
+// import nodeFetch from "node-fetch";
 // var axios = require('axios');
 // var data = JSON.stringify({
 //     "collection": "<COLLECTION_NAME>",
@@ -104,7 +104,7 @@ export async function GET(){
         };
     try{
         // const data = await axios(config);
-        const data = await nodeFetch(url, config);
+        const data = await fetch(url, config);
 //        console.log('data:', await data.json());
         const response = await data.json();
         // axios(config)
