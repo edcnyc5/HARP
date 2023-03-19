@@ -4,10 +4,11 @@
 	import Player from "../../lib/components/Player.svelte";
 	import PlayerMini from "../../lib/components/PlayerMini.svelte";
 	import SearchResults from "../../lib/components/SearchResults.svelte";
-    import { audioFile, isPlaying, trackIndex, songs, totalTrackTime, trackTitle, trackChurch, currentTimeDisplay, success,refresh } from "../../lib/stores";
+    import { audioFile, isPlaying, trackIndex, songs, totalTrackTime, trackTitle, trackChurch, currentTimeDisplay, success,refresh, songsMD, trackETag } from "../../lib/stores";
     // $: console.log(`currentTimeDisplay = ${$currentTimeDisplay}`);
 
     let usrSearch;
+    
 
     onMount(() => {
         if(!$success){
@@ -37,6 +38,7 @@
         console.log('$audioFile: ', $audioFile);
         $trackTitle = $songs[$trackIndex].Name;
         $trackChurch = $songs[$trackIndex].Church;
+        $trackETag = $songs[$trackIndex].ETag;
         setTimeout(() => {
             $refresh = false;
             console.log('$refAft: ', $refresh);
@@ -58,7 +60,7 @@
     }
 
     function searchFunc() {
-        console.log('usrSearch: ', usrSearch);
+        // console.log('usrSearch: ', usrSearch);
         $songs = $songs;
     }
 
@@ -100,9 +102,19 @@
 {#if usrSearch}
     <div class="relative bg-zinc-900 w-screen h-96 mt-5" id="searchList">
         <div class="static h-96 overflow-auto">
+            {#if $songs.filter(s => s.Name.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()) || s.Church.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase())).length > 0}
+                By Song Title / Church:                
+            {/if}
             {#each $songs.filter(s => s.Name.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()) || s.Church.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase())) as song (song)}
                 <SearchResults sResult={song}
                                 on:passSong={receivedSong(song)}/>
+            {/each}
+            {#if $songsMD.filter(s => s.singer1.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()) || s.singer2.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()) || s.singer3.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()) || s.singer4.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()) || s.singer5.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase())).length > 0}
+                By Worshipper:            
+            {/if}
+            {#each $songsMD.filter(s => s.singer1.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()) || s.singer2.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()) || s.singer3.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()) || s.singer4.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()) || s.singer5.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase())) as song (song)}
+                <SearchResults sResult={$songs.find(s => s.ETag == song.etag)}
+                                on:passSong={receivedSong($songs.find(s => s.ETag == song.etag))}/>
             {/each}
         </div>
     </div>

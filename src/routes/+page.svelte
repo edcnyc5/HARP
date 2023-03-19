@@ -8,7 +8,7 @@
     import { songs, bibAudios, expAudios, success, trackTitle, trackChurch, 
         totalTrackTime, isPlaying, trackIndex, currentTimeDisplay, totalTimeDisplay, 
         progress, audioFile, trackTimer, currHrs, currMins, currSecs, durHrs, durMins, 
-        durSecs, refresh } from "../lib/stores";
+        durSecs, refresh, songsMD, trackETag } from "../lib/stores";
 
 
     
@@ -91,7 +91,7 @@
             let secondKey = 'Url';
             let thirdKey = 'Art'; 
             let fourthKey = 'Church';
-            let fifthKey = 'eTag';
+            let fifthKey = 'ETag';
             let newObj = {};
 
             // console.log(c.Key.substring(c.Key.length - 1)); 
@@ -118,7 +118,7 @@
                 Object.assign(newObj, { [secondKey]: 'https://zaudio.fra1.cdn.digitaloceanspaces.com/' + c.Key});
                 Object.assign(newObj, { [thirdKey]: 'https://zaudio.fra1.cdn.digitaloceanspaces.com/' + c.Key});
                 Object.assign(newObj, { [fourthKey]: c.Key.includes('TZ') ? 'Tabernáculo Zoe' : c.Key.includes('TVDA') ? 'Tabernáculo Voz de Aclamación' : c.Key.includes('TV') ? 'Tabernáculo Vida' : c.Key.includes('TSJ') ? 'Tabernáculo del Señor Jesucristo' : c.Key.includes('TIDD') ? 'Tabernáculo Iglesia de Dios' : c.Key.includes('TES') ? 'Tabernaculo El Shaddai' : c.Key.includes('TEA') ? 'Third Exodus Assembly' : c.Key.includes('TDC') ? 'Tabernáculo de Cúcuta' : c.Key.includes('TDA') ? 'Tabernáculo de Adoración' : c.Key.includes('TADA') ? 'Tabernáculo Alas de Aguila' : c.Key.includes('Misc') ? 'Misc.' : 'Unknown'});
-                Object.assign(newObj, { [fifthKey]: c.ETag});
+                Object.assign(newObj, { [fifthKey]: c.ETag.replace(/"/g, '')});
                 $songs.push(newObj);
             } else{
                 // console.log('unknown: ', c);
@@ -147,6 +147,7 @@
             }
         console.log('$songs: ', $songs);
         data = resp.Contents;
+        $songsMD = monRes.documents;
         // dataTwo = testMeta;
         // console.log('data: ', data);
     }
@@ -182,6 +183,7 @@
         console.log('$audioFile: ', $audioFile);
         $trackTitle = $songs[$trackIndex].Name;
         $trackChurch = $songs[$trackIndex].Church;
+        $trackETag = $songs[$trackIndex].ETag;
         setTimeout(() => {
             $refresh = false;
             console.log('$refAfter: ', $refresh);
