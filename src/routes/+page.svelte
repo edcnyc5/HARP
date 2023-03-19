@@ -10,22 +10,121 @@
         progress, audioFile, trackTimer, currHrs, currMins, currSecs, durHrs, durMins, 
         durSecs, refresh } from "../lib/stores";
 
+
+    function storageAvailable(type) {
+        let storage;
+        try {
+            storage = window[type];
+            const x = "__storage_test__";
+            storage.setItem(x, x);
+            storage.removeItem(x);
+            return true;
+        } catch (e) {
+            return (
+            e instanceof DOMException &&
+            // everything except Firefox
+            (e.code === 22 ||
+                // Firefox
+                e.code === 1014 ||
+                // test name field too, because code might not be present
+                // everything except Firefox
+                e.name === "QuotaExceededError" ||
+                // Firefox
+                e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            storage &&
+            storage.length !== 0
+            );
+        }
+    }
+
+    if (storageAvailable("localStorage")) {
+    // Yippee! We can use localStorage awesomeness
+        alert('localStorage available!');
+    } else {
+    // Too bad, no localStorage for us
+        alert('no localStorage...');
+    }
+
+    let data;
+    let dataTwo;
+    let csvData = '';
+
+    function export2CSV() {
+        csvData = '';
+        let csv = [];
+        let colHeaders = '';
+        let now = (new Date().toString()).split('GMT')[0];
+        csv.push(['Id(ETag)', 'Title']);
+        // csv[0] = csv[0].filter(entry => /\S/.test(entry));
+        // console.log('csv: ', csv.join(','));
+        colHeaders = csv.join(',');
+        data.forEach((c, index) => {
+        // dataTwo.forEach((c, index) => {
+            csv.push([c.ETag, c.Key.normalize("NFD").replace(/\p{Diacritic}/gu, "")]);
+            // csv.push([c.ETag, JSON.stringify(c.Metadata)]);
+            // csv[index+1] = csv[index+1].filter(entry => /\S/.test(entry));
+        });
+        // console.log('csv: ', csv);
+        csv.forEach((row, index) => {
+            csv.splice(index,1,row.join(','));
+        });
+        csvData += csv.join('\n');
+        // console.log('csv (string): ', csv.join('\n'));
+
+        const blob = new Blob([csvData], {type: 'text/csv;charset=utf-8,'});
+        const objURL = URL.createObjectURL(blob);
+        const csvLink = document.createElement('a');
+        csvLink.setAttribute('href', objURL);
+        csvLink.setAttribute('download', 'HARP SongList ' + now + '.csv');
+        csvLink.setAttribute('display', 'none');
+        csvLink.click();
+    }
+
     let sWidth; 
-    console.log('g');
+    // console.log('g');
+
+// IMPORTING INTO DB (!!WARNING!! – MAY OVERWRITE)    
+    // async function attempt(){
+    //     const att = await fetch('./api/mon');
+    //     let attResp = await att.json();
+    //     console.log('attResp: ', attResp);
+    // }
     
 
     async function getSongs(){
         if($success)
             return;
+        // const response = await fetch("./api/dOs");
         const response = await fetch("./api/dOs");
         let resp = await response.json();
         console.log('response', resp);
+
+        const monResponse = await fetch('./api/monKey');
+        let monRes = await monResponse.json();
+        console.log('monRes: ', monRes);
+
+        // const res = await fetch('./api/dOsMeta', {method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(resp)});
+        // let resMeta =  await res.json();
+        // let testMeta = [];
+        // console.log('resMeta:', resMeta);
+        // resMeta.forEach(m => {
+        //     console.log(Object.keys(m.Metadata));
+        //     let tempArr = [];
+        //     tempArr = [...tempArr, Object.keys(m.Metadata)];
+        //     console.log('tA: ', tempArr);
+        //     if(m.Metadata && Object.keys(m.Metadata) && Object.keys(m.Metadata).length > 0)
+        //         testMeta.push({ ETag: m.ETag , Metadata : m.Metadata });
+        // });
+        // console.log('metaFixed: ', testMeta);
+
         resp.Contents.forEach(c => {
 
             let firstKey = 'Name';
             let secondKey = 'Url';
             let thirdKey = 'Art'; 
             let fourthKey = 'Church';
+            let fifthKey = 'eTag';
             let newObj = {};
 
             // console.log(c.Key.substring(c.Key.length - 1)); 
@@ -38,21 +137,24 @@
                 Object.assign(newObj, { [secondKey]: 'https://zaudio.fra1.cdn.digitaloceanspaces.com/' + c.Key});
                 Object.assign(newObj, { [thirdKey]: 'https://zaudio.fra1.cdn.digitaloceanspaces.com/' + c.Key});
                 // Object.assign(newObj, { [fourthKey]: 'church'});
+                Object.assign(newObj, { [fifthKey]: c.ETag});
                 $bibAudios.push(newObj);
             } else if(c.Key.includes('Exposition')){
                 Object.assign(newObj, { [firstKey]: c.Key.replace(/(([A-z])*(-)*([A-z])*(-)*([A-z])*([0-9])*\/)*(?=[^\.])*(\.mp3)*/, '')});
                 Object.assign(newObj, { [secondKey]: 'https://zaudio.fra1.cdn.digitaloceanspaces.com/' + c.Key});
                 Object.assign(newObj, { [thirdKey]: 'https://zaudio.fra1.cdn.digitaloceanspaces.com/' + c.Key});
                 // Object.assign(newObj, { [fourthKey]: 'church'});
+                Object.assign(newObj, { [fifthKey]: c.ETag});
                 $expAudios.push(newObj);
             } else if(c.Key.includes('Songs')){
                 Object.assign(newObj, { [firstKey]: c.Key.replace(/(([A-z])*(-)*([A-z])*(-)*([A-z])*([0-9])*\/)*(?=[^\.])*(\.mp3)*/g, '')});
                 Object.assign(newObj, { [secondKey]: 'https://zaudio.fra1.cdn.digitaloceanspaces.com/' + c.Key});
                 Object.assign(newObj, { [thirdKey]: 'https://zaudio.fra1.cdn.digitaloceanspaces.com/' + c.Key});
                 Object.assign(newObj, { [fourthKey]: c.Key.includes('TZ') ? 'Tabernáculo Zoe' : c.Key.includes('TVDA') ? 'Tabernáculo Voz de Aclamación' : c.Key.includes('TV') ? 'Tabernáculo Vida' : c.Key.includes('TSJ') ? 'Tabernáculo del Señor Jesucristo' : c.Key.includes('TIDD') ? 'Tabernáculo Iglesia de Dios' : c.Key.includes('TES') ? 'Tabernaculo El Shaddai' : c.Key.includes('TEA') ? 'Third Exodus Assembly' : c.Key.includes('TDC') ? 'Tabernáculo de Cúcuta' : c.Key.includes('TDA') ? 'Tabernáculo de Adoración' : c.Key.includes('TADA') ? 'Tabernáculo Alas de Aguila' : c.Key.includes('Misc') ? 'Misc.' : 'Unknown'});
+                Object.assign(newObj, { [fifthKey]: c.ETag});
                 $songs.push(newObj);
             } else{
-                console.log('unknown: ', c);
+                // console.log('unknown: ', c);
             }
         });
 
@@ -77,6 +179,9 @@
                 console.log('success, data loaded');
             }
         console.log('$songs: ', $songs);
+        data = resp.Contents;
+        // dataTwo = testMeta;
+        // console.log('data: ', data);
     }
 
     function randFunc(a, b) {
@@ -99,19 +204,6 @@
     //     }
     // })
 
-    // onMount(() => {
-    //     $songs = $songs;
-    //     console.log('songs.length: ', $songs.length);
-    //     console.log('songs: ', $songs);
-    // })
-
-        // Get Audio track
-    // let trackIndex = 0;
-    // let audioFile = new Audio($songs[trackIndex].Url);
-    // let trackTitle = $songs[trackIndex].Name;
-    // let audioFile;
-    // let trackTitle;
-    // let trackChurch;
 
     const loadTrack = () => {
         $refresh = true;
@@ -277,6 +369,9 @@
 </script>
 
 <h1 class="text-3xl font-bold p-1">Welcome to H.A.R.P.</h1>
+ <!-- <h5 on:click={() => export2CSV()}>download CSV</h5> -->
+ <!-- <h5 on:click={() => attempt()}>import CSV to mon</h5> -->
+
 <br/>
 <!-- {#each $songs as s}
     <a href="{s.Url}">{s.Name}</a>
