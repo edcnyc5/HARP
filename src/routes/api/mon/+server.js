@@ -7,12 +7,12 @@ import csvtojson from csvtojson;
 
 export async function GET(){
     try {
-        let ps = encodeURIComponent('password');
+        // let ps = encodeURIComponent('password');
 
         let dbConn;
 const { MongoClient, ServerApiVersion } = require('mongodb');
 // const uri = "mongodb+srv://"+import.meta.env.MON_USR+":"+import.meta.env.MON_PS+"@harp1.e2fhbtk.mongodb.net/?retryWrites=true&w=majority";
-const uri = "mongodb+srv://eldulcecantor:"+ps+"@harp1.e2fhbtk.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://eldulcecantor:password@harp1.e2fhbtk.mongodb.net/?retryWrites=true&w=majority";
 // console.log('uri: ', uri);
 // let enURI = encodeURIComponent(uri);
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
