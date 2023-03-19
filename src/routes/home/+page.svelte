@@ -3,7 +3,7 @@
 	import Player from "../../lib/components/Player.svelte";
 	import { onMount } from "svelte";
     import PlayerMini from "../../lib/components/PlayerMini.svelte";
-    import { audioFile, isPlaying, trackIndex, songs, totalTrackTime, trackTitle, trackChurch, currentTimeDisplay, success } from "../../lib/stores";
+    import { audioFile, isPlaying, trackIndex, songs, totalTrackTime, trackTitle, trackChurch, currentTimeDisplay, success,refresh } from "../../lib/stores";
     // $: console.log(`currentTimeDisplay = ${$currentTimeDisplay}`);
 
     onMount(() => {
@@ -25,6 +25,8 @@
     }
 
     const loadTrack = () => {
+        $refresh = true;
+        console.log('$ref:', $refresh);
         $audioFile = new Audio($songs[$trackIndex].Url);
         $audioFile.onloadedmetadata = () => {
             $totalTrackTime = $audioFile.duration;
@@ -32,6 +34,10 @@
         console.log('$audioFile: ', $audioFile);
         $trackTitle = $songs[$trackIndex].Name;
         $trackChurch = $songs[$trackIndex].Church;
+        setTimeout(() => {
+            $refresh = false;
+            console.log('$refAft: ', $refresh);
+        }, 100);
     }
 
     const PlayNextTrack = () => {
@@ -68,6 +74,7 @@
 <h1 class="text-3xl font-bold p-1">Home</h1>
 
 <h2 class="text-md font-bold p-1">{@html 'Coming Soon! :)'}</h2>
+
 
 <div class="flex fixed w-screen justify-around bottom-28 text-sm font-bold ">
     Click below to return to the Welcome Screen! 

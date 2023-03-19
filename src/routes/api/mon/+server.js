@@ -1,11 +1,13 @@
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const csvtojson = require('csvtojson');
+// import { createRequire } from 'module';
+// import { createRequire } from "./module";
+// const require = createRequire(import.meta.url);
+// const csvtojson = window.require('csvtojson');
+import csvtojson from csvtojson;
 
 
 export async function GET(){
     try {
-        let ps = encodeURIComponent('M:159!iGh+');
+        let ps = encodeURIComponent('password');
 
         let dbConn;
 const { MongoClient, ServerApiVersion } = require('mongodb');
@@ -22,7 +24,9 @@ async function run() {
         const pause = await client.connect();
 
         const database = client.db('harp');
+        console.log('database: ', database);
         const coll = database.collection('songs');
+        console.log('coll:', coll);
 
         // CSV file name
         const fileName = "./static/mID-2023-0318.csv";

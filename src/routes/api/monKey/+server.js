@@ -1,5 +1,7 @@
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
+// import { createRequire } from 'module';
+// import { createRequire } from './module';
+// const require = createRequire(import.meta.url);
+import axios from "axios";
 
 // var axios = require('axios');
 // var data = JSON.stringify({
@@ -69,7 +71,7 @@ const require = createRequire(import.meta.url);
 
 // W I T H  D B  &  C O L L  D E F I N E D
 
-var axios = require('axios');
+// var axios = window.require('axios');
 var data = JSON.stringify({
     "dataSource": "harp1",
     "database": "harp",
