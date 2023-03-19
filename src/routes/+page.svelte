@@ -145,7 +145,7 @@
                 $success = true;
                 console.log('success, data loaded');
             }
-        console.log('$songs: ', $songs);
+        // console.log('$songs: ', $songs);
         data = resp.Contents;
         $songsMD = monRes.documents;
         // dataTwo = testMeta;
