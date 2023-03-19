@@ -2,7 +2,7 @@
 // import { createRequire } from './module';
 // const require = createRequire(import.meta.url);
 import axios from "axios";
-
+import  nodeFetch  from "node-fetch";
 // var axios = require('axios');
 // var data = JSON.stringify({
 //     "collection": "<COLLECTION_NAME>",
@@ -86,11 +86,12 @@ var data = JSON.stringify({
 
 export async function GET(){
 //    try {
+        let url = import.meta.env.VITE_ATLAS_EP + '/action/find';
+        // console.log(url);
         var config = {
-            method: 'post',
+            method: 'POST',
             // url: 'https://data.mongodb-api.com/app/data-ztkrx/endpoint/data/v1/action/findOne',
             // url: import.meta.env.VITE_ATLAS_EP + '/action/findOne',
-            url: import.meta.env.VITE_ATLAS_EP + '/action/find',
             headers: {
             'Content-Type': 'application/json',
             'Access-Control-Request-Headers': '*',
@@ -98,11 +99,14 @@ export async function GET(){
             'api-key': import.meta.env.VITE_ATLAS_KEY,
             'Accept': 'application/ejson'
             },
-            data: data
+            // data: data
+            body: data
         };
     try{
-        const data = await axios(config);
-        console.log('data:', data.data);
+        // const data = await axios(config);
+        const data = await nodeFetch(url, config);
+//        console.log('data:', await data.json());
+        const response = await data.json();
         // axios(config)
         //     .then(function (response) {
         //         console.log(JSON.stringify(response.data));
@@ -111,7 +115,7 @@ export async function GET(){
         //         console.log(error);
         //     });
         // return new Response(JSON.stringify(response.data));
-        return new Response(JSON.stringify(data.data));
+        return new Response(JSON.stringify(response));
     } catch (err) {
         console.log("Error", err);
     }
