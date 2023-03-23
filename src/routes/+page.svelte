@@ -117,7 +117,18 @@
                 Object.assign(newObj, { [firstKey]: c.Key.replace(/(([A-z])*(-)*([A-z])*(-)*([A-z])*([0-9])*\/)*(?=[^\.])*(\.mp3)*/g, '')});
                 Object.assign(newObj, { [secondKey]: 'https://zaudio.fra1.cdn.digitaloceanspaces.com/' + c.Key});
                 Object.assign(newObj, { [thirdKey]: 'https://zaudio.fra1.cdn.digitaloceanspaces.com/' + c.Key});
-                Object.assign(newObj, { [fourthKey]: c.Key.includes('TZ') ? 'Tabernáculo Zoe' : c.Key.includes('TVDA') ? 'Tabernáculo Voz de Aclamación' : c.Key.includes('TV') ? 'Tabernáculo Vida' : c.Key.includes('TSJ') ? 'Tabernáculo del Señor Jesucristo' : c.Key.includes('TIDD') ? 'Tabernáculo Iglesia de Dios' : c.Key.includes('TES') ? 'Tabernaculo El Shaddai' : c.Key.includes('TEA') ? 'Third Exodus Assembly' : c.Key.includes('TDC') ? 'Tabernáculo de Cúcuta' : c.Key.includes('TDA') ? 'Tabernáculo de Adoración' : c.Key.includes('TADA') ? 'Tabernáculo Alas de Aguila' : c.Key.includes('Misc') ? 'Misc.' : 'Unknown'});
+                Object.assign(newObj, { [fourthKey]: 
+                    c.Key.includes('TZ') ? 'Tabernáculo Zoe' :
+                     c.Key.includes('TVDA') ? 'Tabernáculo Voz de Aclamación' : 
+                     c.Key.includes('TV') ? 'Tabernáculo Vida' : 
+                     c.Key.includes('TSJ') ? 'Tabernáculo del Señor Jesucristo' : 
+                     c.Key.includes('TIDD') ? 'Tabernáculo Iglesia de Dios' : 
+                     c.Key.includes('TES') ? 'Tabernaculo El Shaddai' : 
+                     c.Key.includes('TEA') ? 'Third Exodus Assembly' : 
+                     c.Key.includes('TDC') ? 'Tabernáculo de Cúcuta' : 
+                     c.Key.includes('TDA') ? 'Tabernáculo de Adoración' : 
+                     c.Key.includes('TADA') ? 'Tabernáculo Alas de Aguila' : 
+                     c.Key.includes('Misc') ? 'Misc.' : 'Unknown'});
                 Object.assign(newObj, { [fifthKey]: c.ETag.replace(/"/g, '')});
                 $songs.push(newObj);
             } else{

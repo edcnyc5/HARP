@@ -10,9 +10,12 @@
         songMD = $songsMD.filter(s => s.etag == $trackETag);
     })
 
+    $: songMD = $songsMD.filter(s => s.etag == $trackETag);
+
     afterUpdate(() => {
-        songMD = $songsMD.filter(s => s.etag == $trackETag);
-        console.log('songMD: ', songMD);
+        // setTimeout(() => {
+            console.log('songMD: ', songMD);
+        // },300)
     })
 </script>
 

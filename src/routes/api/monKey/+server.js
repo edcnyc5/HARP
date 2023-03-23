@@ -15,11 +15,10 @@
             
 // var config = {
 //     method: 'post',
-//     url: 'https://data.mongodb-api.com/app/data-ztkrx/endpoint/data/v1/action/findOne',
+//     url: import.meta.env.VITE_ATLAS_EP + '/action/findOne',
 //     headers: {
 //       'Content-Type': 'application/json',
 //       'Access-Control-Request-Headers': '*',
-//     //   'api-key': 'YiYfRxFFV2EUmyEYVkWNddi75LjDfIJsCW0S5tgIvRGQjkkJlbKO4pEe0cihqp87',
 //       'api-key': import.meta.env.VITE_ATLAS_KEY,
 //       'Accept': 'application/ejson'
 //     },
@@ -49,11 +48,10 @@
             
 // var config = {
 //     method: 'post',
-//     url: 'https://data.mongodb-api.com/app/data-ztkrx/endpoint/data/v1/action/findOne',
+//     url: import.meta.env.VITE_ATLAS_EP + '/action/findOne',
 //     headers: {
 //       'Content-Type': 'application/json',
 //       'Access-Control-Request-Headers': '*',
-//     //   'api-key': 'YiYfRxFFV2EUmyEYVkWNddi75LjDfIJsCW0S5tgIvRGQjkkJlbKO4pEe0cihqp87',
 //       'api-key': import.meta.env.VITE_ATLAS_KEY,
 //       'Accept': 'application/ejson'
 //     },
@@ -90,12 +88,10 @@ export async function GET(){
         // console.log(url);
         var config = {
             method: 'POST',
-            // url: 'https://data.mongodb-api.com/app/data-ztkrx/endpoint/data/v1/action/findOne',
             // url: import.meta.env.VITE_ATLAS_EP + '/action/findOne',
             headers: {
             'Content-Type': 'application/json',
             'Access-Control-Request-Headers': '*',
-            //   'api-key': 'YiYfRxFFV2EUmyEYVkWNddi75LjDfIJsCW0S5tgIvRGQjkkJlbKO4pEe0cihqp87',
             'api-key': import.meta.env.VITE_ATLAS_KEY,
             'Accept': 'application/ejson'
             },

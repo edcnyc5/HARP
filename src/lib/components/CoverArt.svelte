@@ -1,5 +1,5 @@
 <script>
-	import { onDestroy, onMount } from "svelte";
+	import { afterUpdate, onDestroy, onMount } from "svelte";
 	import { fade,fly } from "svelte/transition";
     import { trackChurch } from "../stores";
     // console.log(window.screen);
@@ -11,48 +11,54 @@
     let churchAbb;
     let cover;
 
-    // onMount(() => {
-
-    // })
+    onMount(() => {
+        setAbb();
+    })
 
     // onDestroy(() => {
     //     fade(cover,)
     // })
+
+    afterUpdate(() => {
+        setAbb();
+    })
     
-    switch ($trackChurch) {
-        case 'Tabernáculo Zoe':
-            churchAbb = 'TZ';
-            break;
-        case 'Tabernáculo de Adoración':
-            churchAbb = 'TDA';
-            break;
-        case 'Third Exodus Assembly':
-            churchAbb = 'TEA';
-            break;
-        case 'Tabernáculo del Señor Jesucristo':
-            churchAbb = 'TSJ';
-            break;
-        case 'Tabernáculo Voz de Aclamación':
-            churchAbb = 'TVDA';
-            break;
-        case 'Tabernaculo El Shaddai':
-            churchAbb = 'TES';
-            break;
-        case 'Tabernáculo Alas de Aguila':
-            churchAbb = 'TADA';
-            break;
-        case 'Tabernáculo de Cúcuta':
-            churchAbb = 'TDC';
-            break;
-        case 'Tabernáculo Iglesia de Dios':
-            churchAbb = 'TIDD';
-            break;
-        case 'Tabernáculo Vida':
-            churchAbb = 'TV';
-            break;
-        default:
-            churchAbb = 'MISC'
-            break;
+    function setAbb() {
+        switch ($trackChurch) {
+            case 'Tabernáculo Zoe':
+                churchAbb = 'TZ';
+                break;
+            case 'Tabernáculo de Adoración':
+                churchAbb = 'TDA';
+                break;
+            case 'Third Exodus Assembly':
+                churchAbb = 'TEA';
+                break;
+            case 'Tabernáculo del Señor Jesucristo':
+                churchAbb = 'TSJ';
+                break;
+            case 'Tabernáculo Voz de Aclamación':
+                churchAbb = 'TVDA';
+                break;
+            case 'Tabernaculo El Shaddai':
+                churchAbb = 'TES';
+                break;
+            case 'Tabernáculo Alas de Aguila':
+                churchAbb = 'TADA';
+                break;
+            case 'Tabernáculo de Cúcuta':
+                churchAbb = 'TDC';
+                break;
+            case 'Tabernáculo Iglesia de Dios':
+                churchAbb = 'TIDD';
+                break;
+            case 'Tabernáculo Vida':
+                churchAbb = 'TV';
+                break;
+            default:
+                churchAbb = 'MISC'
+                break;
+    }
     }
 
     // console.log('churchAbb: ', churchAbb);

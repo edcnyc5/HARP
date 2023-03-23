@@ -1,11 +1,20 @@
 <script>
-	import { songs, bibAudios, expAudios } from "../stores";
-	import { createEventDispatcher } from "svelte";
+	import { songs, bibAudios, expAudios, audioFile } from "../stores";
+	import { afterUpdate, createEventDispatcher } from "svelte";
 	
 	let listIsShowing = false;
+	let aFString = '';
+
+	afterUpdate(() => {
+		aFString = decodeURIComponent($audioFile.src).toString();
+	})
+
 	let dispatch = createEventDispatcher();
 	
-	const showPlayList = () => listIsShowing = !listIsShowing
+	const showPlayList = () => {
+		listIsShowing = !listIsShowing;
+		// console.log(decodeURIComponent($audioFile.src));
+		};
 </script>
 
 
@@ -13,10 +22,14 @@
 	<button class="accordion bg-zinc-900"
 					class:active={listIsShowing}
 					on:click={showPlayList}>&#9776; Playlist</button>
+	<span style="display: block;
+    			height: 4px;">
+		&nbsp;
+	</span>
 
 	<ul class:show-list={listIsShowing}>
 		{#each $songs as {Name, Url, Church}, i}
-		<li data-track-id={i}
+		<li class:active={aFString === Url.toString()} data-track-id={i}
 				on:click={() => dispatch('playList', {data: i, url: Url})}>
 			<span>
 				{Name} - 
@@ -75,6 +88,11 @@
 		padding: 5px 5px 5px 20px;
 		border-bottom: 1px solid #ddd;
 		cursor: pointer;
+	}
+
+	.active{
+		background-color: rgb(187, 187, 187);
+		color: #222;
 	}
 	
 	li:active, li:hover {

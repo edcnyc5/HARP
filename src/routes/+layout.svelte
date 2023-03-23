@@ -1,11 +1,12 @@
 <script>
     import "../app.css"
     import { onMount } from "svelte";
-    import { songs, bibAudios, expAudios, currentTimeDisplay, audioFile, totalTrackTime, timeRemaining, songTime, trackIndex, trackTitle, trackChurch } from "../lib/stores";
+    import { songs, bibAudios, expAudios, currentTimeDisplay, audioFile, totalTrackTime, timeRemaining, songTime, trackIndex, trackTitle, trackChurch, trackETag } from "../lib/stores";
     import Player from "../lib/components/Player.svelte";
 	import BotNav from "../lib/components/BotNav.svelte";
 
     let runningtime;
+    let autoNext;
 
     const autoPlayNextTrack = () => {
         if ($trackIndex <= $songs.length-2){
@@ -29,7 +30,17 @@
         console.log('$audioFile: ', $audioFile);
         $trackTitle = $songs[$trackIndex].Name;
         $trackChurch = $songs[$trackIndex].Church;
+        $trackETag = $songs[$trackIndex].ETag;
+        
     }
+
+    autoNext = setInterval(() => {
+        if($audioFile == null)
+            return;
+        if ($audioFile.ended) {
+            autoPlayNextTrack();
+        }
+    }, 300);
 
     runningtime = setInterval(() => {
                     if($audioFile == null)
@@ -58,9 +69,9 @@
                     }
                     $timeRemaining = "-" + String(mins2).padStart(2, '0') + ':' + String(secs2).padStart(2, '0');
                     // console.log('runningTime running');
-                    if ($audioFile.ended) {
-                        autoPlayNextTrack();
-                    }
+                    // if ($audioFile.ended) {
+                    //     autoPlayNextTrack();
+                    // }
                 }, 1000);
 
 </script>
