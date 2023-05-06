@@ -11,8 +11,6 @@
         durSecs, refresh, songsMD, trackETag } from "../lib/stores";
 
 
-    
-
     let data;
     let dataTwo;
     let csvData = '';
@@ -371,9 +369,6 @@
             on:rewind={PlayLastTrack}/>
     <Playlist on:playList={handleTrack} />
 {/if}
-
-
-
 
 
 <!-- <style lang="postcss">

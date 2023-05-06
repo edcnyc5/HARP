@@ -9,6 +9,7 @@
     let autoNext;
 
     const autoPlayNextTrack = () => {
+        console.log('trackended, handling');
         if ($trackIndex <= $songs.length-2){
             $trackIndex += 1;
             // $audioFile.pause();
@@ -20,6 +21,7 @@
             loadTrack();
             $audioFile.play();
         }
+        console.log('finished handling ended');
     }
 
     const loadTrack = () => {
@@ -34,13 +36,16 @@
         
     }
 
-    autoNext = setInterval(() => {
-        if($audioFile == null)
-            return;
-        if ($audioFile.ended) {
-            autoPlayNextTrack();
-        }
-    }, 300);
+
+    $: if($audioFile) $audioFile.addEventListener('ended', autoPlayNextTrack);
+
+    // autoNext = setInterval(() => {
+    //     if($audioFile == null)
+    //         return;
+    //     if ($audioFile.ended) {
+    //         autoPlayNextTrack();
+    //     }
+    // }, 300);
 
     runningtime = setInterval(() => {
                     if($audioFile == null)
