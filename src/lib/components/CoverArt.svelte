@@ -55,6 +55,12 @@
             case 'Tabernáculo Vida':
                 churchAbb = 'TV';
                 break;
+            case 'Santa Biblia':
+                churchAbb = 'BIB';
+                break;
+            case 'Exposición':
+                churchAbb = 'EXP';
+                break;
             default:
                 churchAbb = 'MISC'
                 break;

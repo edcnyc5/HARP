@@ -4,7 +4,8 @@
 	import Player from "../../lib/components/Player.svelte";
 	import PlayerMini from "../../lib/components/PlayerMini.svelte";
 	import SearchResults from "../../lib/components/SearchResults.svelte";
-    import { audioFile, isPlaying, trackIndex, songs, totalTrackTime, trackTitle, trackChurch, currentTimeDisplay, success,refresh, songsMD, trackETag } from "../../lib/stores";
+    import { audioFile, isPlaying, trackIndex, songs, totalTrackTime, trackTitle, trackChurch, currentTimeDisplay, success,refresh, songsMD, trackETag, allChurches, allSBs, expSpnPList, bibSpnPList, customPList, specialList } from "../../lib/stores";
+	import CoverArtMid from "../../lib/components/CoverArtMid.svelte";
     // $: console.log(`currentTimeDisplay = ${$currentTimeDisplay}`);
 
     let usrSearch;
@@ -13,6 +14,8 @@
     onMount(() => {
         if(!$success){
             goto('./');
+        } else{
+            sortFishYates($allChurches);
         }
     })
     
@@ -88,8 +91,37 @@
         }
     }
 
+    function sortFishYates(array) {
+        let currentIndex = array.length,  randomIndex;
 
+        // While there remain elements to shuffle.
+        while (currentIndex != 0) {
 
+        // Pick a remaining element.
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
+        }
+
+        return array;
+    }
+
+    
+    function libraryClick(libItem) {
+        console.log('clicked libItem: ', libItem);
+        if(libItem == 'Exposición'){
+            $specialList = true;
+            goto('./exp-spn');
+        }
+        if(libItem == 'Santa Biblia'){
+            $specialList = true;
+            goto('./bib-spn');
+        }
+    }
+    
 </script>
 
 <h1 class="text-3xl font-bold p-1">Library</h1>
@@ -115,6 +147,29 @@
             {#each $songsMD.filter(s => s.singer1.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()) || s.singer2.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()) || s.singer3.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()) || s.singer4.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase()) || s.singer5.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(usrSearch.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase())) as song (song)}
                 <SearchResults sResult={$songs.find(s => s.ETag == song.etag)}
                                 on:passSong={receivedSong($songs.find(s => s.ETag == song.etag))}/>
+            {/each}
+        </div>
+    </div>
+{:else}
+    <div class="relative mt-5">
+        <span class="text-lg font-bold pt-12 pl-1">Churches:</span>
+        <div class="mt-1 grid overflow-x-auto grid-rows-1 grid-flow-col gap-4 shadow shadow-zinc-900">
+            {#each $allChurches as churchName}
+                <div>
+                    <CoverArtMid churchFull={churchName}></CoverArtMid>
+                    <span class="text-xs grid leading-snug">{churchName}</span>
+                </div>
+            {/each}
+        </div>
+    </div>
+    <div class="relative mt-5">
+        <span class="text-lg font-bold pt-12 pl-1">Audio-Books:</span>
+        <div class="mt-1 grid overflow-x-auto grid-rows-1 grid-flow-col gap-4 shadow shadow-zinc-900">
+            {#each $allSBs as SBName}
+                <div on:click={() => libraryClick(SBName)}>
+                    <CoverArtMid churchFull={SBName}></CoverArtMid>
+                    <span class="text-xs text-center grid leading-snug">{SBName}</span>
+                </div>
             {/each}
         </div>
     </div>

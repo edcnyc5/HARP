@@ -1,16 +1,18 @@
 <script>
 	import { afterUpdate, onMount } from "svelte";
-	import CoverArt from "../lib/components/CoverArt.svelte";
-	import Player from "../lib/components/Player.svelte";
-	import Playlist from "../lib/components/Playlist.svelte";
-	import ProgressBar from "../lib/components/ProgressBar.svelte";
-	import TrackName from "../lib/components/TrackName.svelte";
+
+    import CoverArtMid from "../../lib/components/CoverArtMid.svelte";
+	import CoverArt from "../../lib/components/CoverArt.svelte";
+	import Player from "../../lib/components/Player.svelte";
+	import Playlist from "../../lib/components/Playlist.svelte";
+	import ProgressBar from "../../lib/components/ProgressBar.svelte";
+	import TrackName from "../../lib/components/TrackName.svelte";
     import { songs, bibAudios, expAudios, success, trackTitle, trackChurch, 
         totalTrackTime, isPlaying, trackIndex, currentTimeDisplay, totalTimeDisplay, 
         progress, audioFile, trackTimer, currHrs, currMins, currSecs, durHrs, durMins, 
-        durSecs, refresh, songsMD, trackETag, customPList, bibSpnPList, expSpnPList } from "../lib/stores";
-	import PlaylistBibSpn from "../lib/components/PlaylistBibSpn.svelte";
-	import PlaylistExpSpn from "../lib/components/PlaylistExpSpn.svelte";
+        durSecs, refresh, songsMD, trackETag, customPList, bibSpnPList, expSpnPList } from "../../lib/stores";
+	import PlaylistBibSpn from "../../lib/components/PlaylistBibSpn.svelte";
+	import PlaylistExpSpn from "../../lib/components/PlaylistExpSpn.svelte";
 
 
     let data;
@@ -105,7 +107,7 @@
                 Object.assign(newObj, { [thirdKey]: 'https://zaudio.fra1.cdn.digitaloceanspaces.com/' + c.Key});
                 Object.assign(newObj, { [fourthKey]: 'Santa Biblia'});
                 Object.assign(newObj, { [fifthKey]: c.ETag});
-                $bibAudios.push(newObj);
+                $expAudios.push(newObj);
             } else if(c.Key.includes('Exposition')){
                 Object.assign(newObj, { [firstKey]: c.Key.replace(/(([A-z])*(-)*([A-z])*(-)*([A-z])*([0-9])*\/)*(?=[^\.])*(\.mp3)*/, '')});
                 Object.assign(newObj, { [secondKey]: 'https://zaudio.fra1.cdn.digitaloceanspaces.com/' + c.Key});
@@ -130,15 +132,15 @@
                      c.Key.includes('TADA') ? 'Tabernáculo Alas de Aguila' : 
                      c.Key.includes('Misc') ? 'Misc.' : 'Unknown'});
                 Object.assign(newObj, { [fifthKey]: c.ETag.replace(/"/g, '')});
-                $songs.push(newObj);
+                $expAudios.push(newObj);
             } else{
                 // console.log('unknown: ', c);
             }
         });
 
-        $songs = $songs.sort(randFunc);
+        $expAudios = $expAudios.sort(randFunc);
             // let test = setTimeout(() => {
-            //     if($songs.length > 0){
+            //     if($expAudios.length > 0){
             //         loadTrack();
             //         success = true;
             //     }
@@ -147,7 +149,7 @@
             //     }
             // }, 500);
 
-            if($songs.length > 0){
+            if($expAudios.length > 0){
                 $trackIndex = 0;
                 $progress = 0;
                 $totalTimeDisplay = 'loading...';
@@ -156,9 +158,9 @@
                 $success = true;
                 console.log('success, data loaded');
             }
-        // console.log('$songs: ', $songs);
+        // console.log('$expAudios: ', $expAudios);
         data = resp.Contents;
-        $songsMD = monRes.documents;
+        // $expAudiosMD = monRes.documents;
         // dataTwo = testMeta;
         // console.log('data: ', data);
     }
@@ -169,14 +171,15 @@
 
     onMount(() => {
         sWidth = window.screen.width;
-        getSongs();
+        PlayNextTrack();
+        // getSongs();
     })
 
     // afterUpdate(() => {
-    //     if($songs.length > 0){
-    //         $songs = $songs;
-    //         console.log('songs.length: ', $songs.length);
-    //         console.log('songs: ', $songs);
+    //     if($expAudios.length > 0){
+    //         $expAudios = $expAudios;
+    //         console.log('songs.length: ', $expAudios.length);
+    //         console.log('songs: ', $expAudios);
     //         if(!success){
 
     //         }
@@ -186,16 +189,16 @@
 
     const loadTrack = () => {
         $refresh = true;
-        $audioFile = new Audio($songs[$trackIndex].Url);
+        $audioFile = new Audio($expAudios[$trackIndex].Url);
         $audioFile.onloadedmetadata = () => {
             $totalTrackTime = $audioFile.duration;
             updateTime();
-            $audioFile.setAttribute('title', $songs[$trackIndex].Name);
+            $audioFile.setAttribute('title', $expAudios[$trackIndex].Name);
         }
         console.log('$audioFile: ', $audioFile);
-        $trackTitle = $songs[$trackIndex].Name;
-        $trackChurch = $songs[$trackIndex].Church;
-        $trackETag = $songs[$trackIndex].ETag;
+        $trackTitle = $expAudios[$trackIndex].Name;
+        $trackChurch = $expAudios[$trackIndex].Church;
+        $trackETag = $expAudios[$trackIndex].ETag;
         setTimeout(() => {
             $refresh = false;
             console.log('$refAfter: ', $refresh);
@@ -203,7 +206,7 @@
     }
 
     const PlayNextTrack = () => {
-        if ($trackIndex <= $songs.length-2){
+        if ($trackIndex <= $expAudios.length-2){
             $trackIndex += 1;
             $audioFile.pause();
             loadTrack();
@@ -216,7 +219,7 @@
         }
     }
     const autoPlayNextTrack = () => {
-        if ($trackIndex <= $songs.length-2){
+        if ($trackIndex <= $expAudios.length-2){
             $trackIndex += 1;
             // $audioFile.pause();
             loadTrack();
@@ -338,7 +341,7 @@
             $audioFile.play();
         } else {
             console.log('else (from PlayLastTrack)');
-            $trackIndex = $songs.length-1;
+            $trackIndex = $expAudios.length-1;
             console.log('$trackIndex: ', $trackIndex);
             $audioFile.pause();
             loadTrack();
@@ -348,12 +351,12 @@
     
 </script>
 
-<h1 class="text-3xl font-bold p-1">Welcome to H.A.R.P.</h1>
+<h1 class="text-3xl font-bold p-1">Una Exposición de Las Siete Edades</h1>
  <!-- <h5 on:click={() => export2CSV()}>download CSV</h5> -->
  <!-- <h5 on:click={() => attempt()}>import CSV to mon</h5> -->
 
 <br/>
-<!-- {#each $songs as s}
+<!-- {#each $expAudios as s}
     <a href="{s.Url}">{s.Name}</a>
     <br/>
 {/each} -->
@@ -369,13 +372,8 @@
     <Player on:playPause={playPauseAudio}
             on:forward={PlayNextTrack}
             on:rewind={PlayLastTrack}/>
-    {#if $bibSpnPList}
-        <PlaylistBibSpn on:playList={handleTrack}/>
-    {:else if $expSpnPList}
-        <PlaylistExpSpn on:playList={handleTrack}/>
-    {:else}
-        <Playlist on:playList={handleTrack} />
-    {/if}
+    <PlaylistExpSpn on:playList={handleTrack}/>
+
 {/if}
 
 

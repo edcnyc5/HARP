@@ -28,8 +28,9 @@
         $audioFile = new Audio($songs[$trackIndex].Url);
         $audioFile.onloadedmetadata = () => {
             $totalTrackTime = $audioFile.duration;
+            $audioFile.setAttribute('title',$songs[$trackIndex].Name);
         }
-        console.log('$audioFile: ', $audioFile);
+        setTimeout(() => console.log('$audioFile: ', $audioFile),1000);
         $trackTitle = $songs[$trackIndex].Name;
         $trackChurch = $songs[$trackIndex].Church;
         $trackETag = $songs[$trackIndex].ETag;

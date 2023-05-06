@@ -39,6 +39,12 @@
         case 'Tabernáculo Vida':
             churchAbb = 'TV';
             break;
+        case 'Santa Biblia':
+            churchAbb = 'BIB';
+            break;
+        case 'Exposición':
+            churchAbb = 'EXP';
+            break;
         default:
             churchAbb = 'MISC'
             break;
@@ -82,8 +88,8 @@
         style="height: 118px; width: 118px;">
             <!-- <div class="static" style="height: {sWidth}px;">test</div> -->
             <img class="w-full" src="https://zaudio.fra1.cdn.digitaloceanspaces.com/Images/{churchAbb}-album.gif" alt="album-cover-{churchFull}">
-            <div></div>
-            <div></div>
+            <!-- <div></div> -->
+            <!-- <div></div> -->
         </div>
 </div>
 
