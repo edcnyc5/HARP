@@ -20,7 +20,7 @@
 
 
 <div class="w-full h-10 bg-zinc-900" id="btn-cont">
-    <div>
+    <div class="self-center">
         <button id="rewind" on:click={() => dispatch('rewind')}>
             <img src={icons.rewind} alt="rewind"/>
         </button>
@@ -50,12 +50,12 @@
         position: absolute;
         bottom: 59px;
 		display: flex;
-		justify-content: space-between;
+		justify-content: space-around;
         /* background: rgba(26, 26, 26, 0.365); */
 	}
 	
 	button {
-		width: 37px;
+		width: 27px;
 		border: none;
 		font-size: 2.3rem;
 		padding: 0;

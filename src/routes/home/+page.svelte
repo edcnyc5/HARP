@@ -76,7 +76,7 @@
 <h2 class="text-md font-bold p-1">{@html 'Coming Soon! :)'}</h2>
 
 
-<div class="flex fixed w-screen justify-around bottom-28 text-sm font-bold ">
+<div class="flex fixed w-screen justify-around bottom-28 text-sm font-bold animate-bounce">
     Click below to return to the Welcome Screen! 
 </div>
 <div>

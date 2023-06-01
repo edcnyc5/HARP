@@ -102,9 +102,11 @@
         class:to-sky-500={num == 2} 
         class:to-rose-500={num == 3} 
         class="bg-gradient-to-r via-cyan-200 to-black ring-1 ring-white rounded-lg shadow-sm shadow-white drop-shadow-2xl" 
-        style="height: {sWidth*0.57}px; width: {sWidth*0.57}px;">
+        style="height: {sWidth*0.57}px; max-height: 15rem; width: {sWidth*0.57}px; max-width: 15rem;">
             <!-- <div class="static" style="height: {sWidth}px;">test</div> -->
-            <img class="w-full" src="https://zaudio.fra1.cdn.digitaloceanspaces.com/Images/{churchAbb}-album.gif" alt="album-cover-{$trackChurch}">
+            {#if churchAbb}
+                <img class="w-full" src="https://zaudio.fra1.cdn.digitaloceanspaces.com/Images/{churchAbb}-album.gif" alt="album-cover-{$trackChurch}">
+            {/if}
             <div></div>
             <div></div>
         </div>
