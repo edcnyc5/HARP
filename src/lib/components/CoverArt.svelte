@@ -1,7 +1,7 @@
 <script>
 	import { afterUpdate, onDestroy, onMount } from "svelte";
 	import { fade,fly } from "svelte/transition";
-    import { trackChurch } from "../stores";
+    import { albumCoverUrl, trackChurch } from "../stores";
     // console.log(window.screen);
     // console.log(window.screen.width);
     let sWidth = window.screen.width;
@@ -64,7 +64,8 @@
             default:
                 churchAbb = 'MISC'
                 break;
-    }
+        }
+        $albumCoverUrl = 'https://zaudio.fra1.cdn.digitaloceanspaces.com/Images/' + churchAbb + '-album.gif';
     }
 
     // console.log('churchAbb: ', churchAbb);
@@ -105,7 +106,7 @@
         style="height: {sWidth*0.57}px; max-height: 15rem; width: {sWidth*0.57}px; max-width: 15rem;">
             <!-- <div class="static" style="height: {sWidth}px;">test</div> -->
             {#if churchAbb}
-                <img class="w-full" src="https://zaudio.fra1.cdn.digitaloceanspaces.com/Images/{churchAbb}-album.gif" alt="album-cover-{$trackChurch}">
+                <img class="w-full" src={$albumCoverUrl} alt="album-cover-{$trackChurch}">
             {/if}
             <div></div>
             <div></div>

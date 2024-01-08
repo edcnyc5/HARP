@@ -31,3 +31,6 @@ export let specialList = writable(false);
 export let bibSpnPList = writable(false);
 export let expSpnPList = writable(false);
 export let customPList = writable(false);
+export let loggedIn = writable(false);
+export let authenticatedUser = writable({}); 
+export let albumCoverUrl = writable('');

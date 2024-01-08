@@ -1,12 +1,39 @@
 <script>
     import "../app.css"
     import { onMount } from "svelte";
-    import { songs, bibAudios, expAudios, currentTimeDisplay, audioFile, totalTrackTime, timeRemaining, songTime, trackIndex, trackTitle, trackChurch, trackETag } from "../lib/stores";
+    import { songs, bibAudios, expAudios, currentTimeDisplay, audioFile, totalTrackTime, timeRemaining, songTime, trackIndex, trackTitle, trackChurch, trackETag, albumCoverUrl } from "../lib/stores";
     import Player from "../lib/components/Player.svelte";
 	import BotNav from "../lib/components/BotNav.svelte";
 
     let runningtime;
     let autoNext;
+    let player;
+    let navigatorHandler;
+
+    onMount(() => {
+        if(navigator)
+            navigatorHandler = navigator;
+
+        if ('mediaSession' in navigatorHandler) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: '',
+                artist: '',
+                album: '',
+                artwork: []
+            });
+
+            navigator.mediaSession.setActionHandler('play', () => { $audioFile.play(); });
+            navigator.mediaSession.setActionHandler('pause', () => { $audioFile.pause(); });
+            navigator.mediaSession.setActionHandler('stop', () => { $audioFile.pause(); });
+            // navigator.mediaSession.setActionHandler('seekbackward', () => { /* Code excerpted. */ });
+            // navigator.mediaSession.setActionHandler('seekforward', () => { /* Code excerpted. */ });
+            // navigator.mediaSession.setActionHandler('seekto', () => { /* Code excerpted. */ });
+
+            // navigator.mediaSession.setActionHandler('previoustrack', () => { /* Code excerpted. */ });
+            navigator.mediaSession.setActionHandler('nexttrack', () => { autoPlayNextTrack() });
+            // navigator.mediaSession.setActionHandler('skipad', () => { /* Code excerpted. */ });
+        }
+    })
 
     const autoPlayNextTrack = () => {
         console.log('trackended, handling');
@@ -26,6 +53,7 @@
 
     const loadTrack = () => {
         $audioFile = new Audio($songs[$trackIndex].Url);
+        // $audioFile = <audio bind:this={player} {$songs[$trackIndex].Url} controls></audio>;
         $audioFile.onloadedmetadata = () => {
             $totalTrackTime = $audioFile.duration;
             $audioFile.setAttribute('title',$songs[$trackIndex].Name);
@@ -34,7 +62,18 @@
         $trackTitle = $songs[$trackIndex].Name;
         $trackChurch = $songs[$trackIndex].Church;
         $trackETag = $songs[$trackIndex].ETag;
-        
+        navigator.mediaSession.metadata = new MediaMetadata({
+                title: $trackTitle,
+                artist: $trackChurch,
+                // album: '',
+                artwork: [
+                    {
+                        src: $albumCoverUrl,
+                        sizes: "512x512",
+                        type: "image/gif",
+                    }
+                ]
+            });
     }
 
 
@@ -80,6 +119,7 @@
                     // }
                 }, 1000);
 
+    
 </script>
 
 
